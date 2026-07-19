@@ -1,0 +1,22 @@
+# Python temporary files
+__pycache__/
+*.pyc
+
+# Virtual environments
+.venv/
+venv/
+
+# Secret environment variables
+.env
+
+# Raw datasets
+data/raw/*
+!data/raw/.gitkeep
+
+# Generated log files
+logs/*
+!logs/.gitkeep
+
+# Operating system files
+.DS_Store
+Thumbs.db
