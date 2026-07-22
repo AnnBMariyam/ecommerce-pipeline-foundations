@@ -20,3 +20,7 @@ logs/*
 # Operating system files
 .DS_Store
 Thumbs.db
+
+# Generated processed datasets
+data/processed/*
+!data/processed/.gitkeep
