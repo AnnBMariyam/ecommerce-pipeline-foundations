@@ -1,0 +1,7 @@
+-- Stores customers who place orders
+CREATE TABLE IF NOT EXISTS customers (
+    customer_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    customer_name VARCHAR(100) NOT NULL,
+    email VARCHAR(255) NOT NULL UNIQUE,
+    created_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
