@@ -1,3 +1,3 @@
 # E-commerce Pipeline Foundations
 
-This project focuses on building a modular Python ETL pipeline for e-commerce order data.
+A beginner-friendly project for building a modular Python ETL pipeline while practicing Git branches, commits, merges, and collaborative development.
