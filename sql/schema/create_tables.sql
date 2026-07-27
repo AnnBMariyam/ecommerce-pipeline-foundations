@@ -17,3 +17,27 @@ CREATE TABLE IF NOT EXISTS products (
     CONSTRAINT products_unit_price_nonnegative
         CHECK (unit_price >= 0)
 );
+
+-- Stores one row for each customer order
+CREATE TABLE IF NOT EXISTS orders (
+    order_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    customer_id BIGINT NOT NULL,
+    order_date TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    status VARCHAR(20) NOT NULL,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    CONSTRAINT orders_customer_fk
+        FOREIGN KEY (customer_id)
+        REFERENCES customers(customer_id),
+
+    CONSTRAINT orders_status_valid
+        CHECK (
+            status IN (
+                'pending',
+                'paid',
+                'shipped',
+                'cancelled',
+                'refunded'
+            )
+        )
+);
