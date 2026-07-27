@@ -67,3 +67,12 @@ CREATE TABLE IF NOT EXISTS order_items (
     CONSTRAINT order_items_unit_price_nonnegative
         CHECK (unit_price >= 0)
 );
+
+
+-- Stores the last successfully processed position for each pipeline
+CREATE TABLE IF NOT EXISTS pipeline_watermark (
+    pipeline_name VARCHAR(100) PRIMARY KEY,
+    last_processed_at TIMESTAMPTZ,
+    last_processed_id BIGINT,
+    updated_at TIMESTAMPTZ NOT NULL DEFAULT CURRENT_TIMESTAMP
+);
