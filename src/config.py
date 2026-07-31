@@ -4,23 +4,61 @@ from pathlib import Path
 from dotenv import load_dotenv
 
 
-# Load values from a local .env file, if one exists
-load_dotenv()
+class ConfigurationError(Exception):
+    """Raised when required project configuration is missing or invalid."""
 
 
-# Find the main project folder
+# The main ecommerce-pipeline-foundations folder
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+# Load variables from the .env file in the project root
+load_dotenv(BASE_DIR / ".env")
 
-# Read file paths from environment variables
-RAW_DATA_PATH = BASE_DIR / os.getenv(
-    "RAW_DATA_PATH",
-    "data/raw/orders.csv",
+
+def get_required_setting(name: str) -> str:
+    """Return a required environment setting or raise a clear error."""
+
+    value = os.getenv(name)
+
+    if value is None or not value.strip():
+        raise ConfigurationError(
+            f"Required configuration setting '{name}' is missing."
+        )
+
+    return value.strip()
+
+
+def get_positive_integer_setting(name: str) -> int:
+    """Read a required setting and validate that it is a positive integer."""
+
+    raw_value = get_required_setting(name)
+
+    try:
+        value = int(raw_value)
+    except ValueError as error:
+        raise ConfigurationError(
+            f"Configuration setting '{name}' must be an integer."
+        ) from error
+
+    if value <= 0:
+        raise ConfigurationError(
+            f"Configuration setting '{name}' must be greater than zero."
+        )
+
+    return value
+
+
+# API settings
+PRODUCTS_API_URL = get_required_setting("PRODUCTS_API_URL")
+API_PAGE_SIZE = get_positive_integer_setting("API_PAGE_SIZE")
+API_TIMEOUT_SECONDS = get_positive_integer_setting(
+    "API_TIMEOUT_SECONDS"
 )
 
-PROCESSED_DATA_PATH = BASE_DIR / os.getenv(
-    "PROCESSED_DATA_PATH",
-    "data/processed/cleaned_orders.csv",
-)
+# File and logging settings
+RAW_DATA_DIR = BASE_DIR / get_required_setting("RAW_DATA_DIR")
+LOG_FILE = BASE_DIR / get_required_setting("LOG_FILE")
+LOG_LEVEL = get_required_setting("LOG_LEVEL").upper()
 
-LOG_LEVEL = os.getenv("LOG_LEVEL", "INFO")
+# PostgreSQL settings
+DATABASE_DSN = get_required_setting("DATABASE_DSN")
