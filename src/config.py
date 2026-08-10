@@ -48,6 +48,33 @@ def get_positive_integer_setting(name: str) -> int:
     return value
 
 
+
+
+def get_database_dsn() -> str:
+    """Return the database DSN and reject obvious placeholder values."""
+
+    dsn = get_required_setting("DATABASE_DSN")
+
+    placeholder_markers = (
+        "CHANGE_ME",
+        "REPLACE_ME",
+        "YOUR_PASSWORD",
+        "PASSWORD_HERE",
+    )
+
+    normalized_dsn = dsn.upper()
+
+    for marker in placeholder_markers:
+        if marker in normalized_dsn:
+            raise ConfigurationError(
+                "DATABASE_DSN appears to contain a placeholder "
+                "password. Replace it with a real credential."
+            )
+
+    return dsn
+
+
+
 # API settings
 PRODUCTS_API_URL = get_required_setting("PRODUCTS_API_URL")
 API_PAGE_SIZE = get_positive_integer_setting("API_PAGE_SIZE")
@@ -61,4 +88,4 @@ LOG_FILE = BASE_DIR / get_required_setting("LOG_FILE")
 LOG_LEVEL = get_required_setting("LOG_LEVEL").upper()
 
 # PostgreSQL settings
-DATABASE_DSN = get_required_setting("DATABASE_DSN")
+DATABASE_DSN = get_database_dsn()
