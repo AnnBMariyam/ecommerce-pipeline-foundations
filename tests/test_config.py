@@ -1,10 +1,13 @@
 import pytest
 
+
 from src.config import (
     ConfigurationError,
+    get_database_dsn,
     get_positive_integer_setting,
     get_required_setting,
 )
+
 
 
 def test_get_required_setting_returns_trimmed_value(
@@ -134,3 +137,62 @@ def test_get_positive_integer_setting_rejects_non_positive_values(
         get_positive_integer_setting(
             "TEST_INTEGER_SETTING"
         )
+
+
+
+@pytest.mark.parametrize(
+    "placeholder",
+    [
+        "CHANGE_ME",
+        "REPLACE_ME",
+        "YOUR_PASSWORD",
+        "PASSWORD_HERE",
+    ],
+)
+def test_get_database_dsn_rejects_placeholder_passwords(
+    monkeypatch: pytest.MonkeyPatch,
+    placeholder: str,
+) -> None:
+    """Obvious placeholder database credentials should be rejected."""
+
+    monkeypatch.setenv(
+        "DATABASE_DSN",
+        (
+            "host=db port=5432 "
+            "dbname=ecommerce_analytics "
+            "user=pipeline_user "
+            f"password={placeholder}"
+        ),
+    )
+
+    with pytest.raises(
+        ConfigurationError,
+        match="placeholder",
+    ):
+        get_database_dsn()
+
+
+
+
+def test_get_database_dsn_accepts_real_value(
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    """A non-placeholder database DSN should be accepted."""
+
+    valid_dsn = (
+        "host=db port=5432 "
+        "dbname=ecommerce_analytics "
+        "user=pipeline_user "
+        "password=test_secure_123"
+    )
+
+    monkeypatch.setenv(
+        "DATABASE_DSN",
+        valid_dsn,
+    )
+
+    result = get_database_dsn()
+
+    assert result == valid_dsn
+
+
