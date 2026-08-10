@@ -1,6 +1,24 @@
-# E-commerce Pipeline Foundations
+# E-commerce API to PostgreSQL ETL Pipeline
 
-A beginner-friendly project for building a modular Python ETL pipeline while practicing Git branches, commits, merges, and collaborative development.
+A production-style Python ETL pipeline that extracts paginated product data
+from the DummyJSON REST API, validates and transforms nested JSON, and loads
+the results into PostgreSQL using idempotent upserts.
+
+The project includes automated testing, structured logging, environment-based
+configuration, Docker containerization, Docker Compose orchestration, and
+GitHub Actions CI.
+
+## Tech Stack
+
+- Python
+- pandas
+- Requests
+- PostgreSQL
+- Psycopg
+- pytest
+- Docker
+- Docker Compose
+- GitHub Actions
 
 ## Run with Docker
 
