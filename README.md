@@ -361,3 +361,23 @@ Pass ✓ / Fail ✗
 
 This provides an independent check that the tested parts of the project work
 outside the local development environment.
+
+
+## What I'd Improve Next
+
+With more time, I would extend the project in the following areas:
+
+- Add unit tests for the extraction and load stages using mocks so API and
+  database failures can be tested without external dependencies.
+- Add integration tests that run against a temporary PostgreSQL container.
+- Introduce retry logic with exponential backoff for temporary API failures
+  and rate limiting.
+- Support cursor-based pagination in addition to offset pagination.
+- Track pipeline runs in a dedicated audit table with start time, end time,
+  status, record counts, and failure details.
+- Separate raw, staging, and analytical database layers as the dataset grows.
+- Add schema migrations instead of creating database tables directly from
+  application code.
+- Add linting and formatting checks to the CI workflow.
+- Add scheduled execution using an orchestrator or cloud scheduler.
+- Add monitoring and alerting for failed production pipeline runs.
