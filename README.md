@@ -294,3 +294,70 @@ python -m src.pipeline
 
 A successful run returns exit code `0` and writes progress to both the terminal
 and `logs/pipeline.log`.
+
+
+## Testing
+
+The project uses `pytest` for automated testing, with a focus on transformation
+and configuration logic that can be tested independently from the API and
+database.
+
+Run the full test suite with:
+
+```bash
+python -m pytest -v
+```
+
+The current suite contains 15 test cases covering:
+
+- successful raw JSON transformation
+- nested field flattening
+- derived review, tag, and image metrics
+- missing product data
+- invalid product structures
+- negative price validation
+- required environment variables
+- positive integer configuration values
+- invalid configuration values
+- placeholder database credential rejection
+
+## Continuous Integration
+
+GitHub Actions automatically runs the pytest suite whenever code is pushed to
+the repository.
+
+The CI workflow is defined in:
+
+```text
+.github/workflows/ci.yml
+```
+
+The workflow performs the following steps:
+
+```text
+Push to GitHub
+      |
+      v
+GitHub Actions starts
+      |
+      v
+Ubuntu runner is created
+      |
+      v
+Repository is checked out
+      |
+      v
+Python 3.12 is installed
+      |
+      v
+Dependencies are installed
+      |
+      v
+pytest runs
+      |
+      v
+Pass ✓ / Fail ✗
+```
+
+This provides an independent check that the tested parts of the project work
+outside the local development environment.
