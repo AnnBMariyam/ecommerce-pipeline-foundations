@@ -116,7 +116,7 @@ Run the test suite locally with:
 
 ```bash
 python -m pytest -v
-
+```
 
 ## What I'd Improve Next
 
