@@ -8,6 +8,22 @@ The project includes automated testing, structured logging, environment-based
 configuration, Docker containerization, Docker Compose orchestration, and
 GitHub Actions CI.
 
+---
+
+## 📌 Project Snapshot
+
+| Area | Implementation |
+|---|---|
+| Data Source | DummyJSON Products REST API |
+| Extraction | Paginated API requests with timestamped raw JSON preservation |
+| Transformation | Schema validation, nested JSON flattening, type conversion, and derived review metrics |
+| Load | PostgreSQL with primary-key validation and idempotent `ON CONFLICT` upserts |
+| Reliability | Structured logging, configuration validation, and custom error handling |
+| Testing | 15 automated pytest cases |
+| Deployment | Docker and Docker Compose |
+| CI | GitHub Actions |
+
+---
 ## Tech Stack
 
 - Python
