@@ -153,14 +153,35 @@ docker compose down
 
 The pipeline can also run directly with Python 3.12 and a local PostgreSQL instance.
 
-```bash
+Create and activate a virtual environment:
+
+**Windows PowerShell**
+```powershell
 python -m venv .venv
-python -m pip install -r requirements.txt
-python -m src.pipeline
+.\.venv\Scripts\Activate.ps1
 ```
 
-Before running locally, create `.env` from `.env.example` and update `DATABASE_DSN` for your PostgreSQL environment.
+**macOS/Linux**
+```bash
+python -m venv .venv
+source .venv/bin/activate
+```
 
+Install dependencies:
+
+```bash
+python -m pip install -r requirements.txt
+```
+
+Create `.env` from `.env.example` and update `DATABASE_DSN` for your local PostgreSQL environment.
+
+Make sure the PostgreSQL database referenced in `DATABASE_DSN` already exists. The pipeline creates the `api_products` table automatically if needed.
+
+Then run:
+
+```bash
+python -m src.pipeline
+```
 ---
 
 ## 🧪 Testing & Continuous Integration
