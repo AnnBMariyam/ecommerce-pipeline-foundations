@@ -55,12 +55,6 @@ flowchart LR
     E --> F
 ```
 
-Docker Compose runs two services:
-
-```text
-pipeline container  --->  db container
-Python ETL               PostgreSQL
-```
 
 The pipeline connects to the PostgreSQL container using the Compose service
 hostname `db` rather than `localhost`.
