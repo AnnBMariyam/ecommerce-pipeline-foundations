@@ -38,30 +38,22 @@ GitHub Actions CI.
 
 ## Pipeline Architecture
 
-```text
-DummyJSON Products API
-        |
-        v
-   Extract
-   - REST API requests
-   - offset pagination
-   - timestamped raw JSON
-        |
-        v
-   Transform
-   - schema validation
-   - nested JSON flattening
-   - type conversion
-   - derived review metrics
-        |
-        v
-   Load
-   - PostgreSQL
-   - primary-key validation
-   - ON CONFLICT upsert
-        |
-        v
-   api_products
+## 🏗️ Pipeline Architecture
+
+```mermaid
+flowchart LR
+    A[DummyJSON Products API]
+    B[Extract<br/>Pagination + API validation]
+    C[Timestamped Raw JSON<br/>data/raw]
+    D[Transform<br/>Flatten + validate + convert types]
+    E[Load<br/>PostgreSQL upsert]
+    F[(PostgreSQL<br/>api_products)]
+
+    A --> B
+    B --> C
+    C --> D
+    D --> E
+    E --> F
 ```
 
 Docker Compose runs two services:
