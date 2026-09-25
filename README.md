@@ -59,47 +59,29 @@ flowchart LR
 The pipeline connects to the PostgreSQL container using the Compose service
 hostname `db` rather than `localhost`.
 
-## How the Pipeline Works
+## ⚙️ How the Pipeline Works
 
 ### 1. Extract
+The pipeline calls the DummyJSON Products API using offset pagination with `limit` and `skip`.
 
-The extraction stage calls the DummyJSON Products API using offset-based
-pagination with `limit` and `skip`.
-
-Each API page is validated, logged, and combined into a complete product
-dataset. The unmodified source data is then saved as a timestamped JSON file
-in `data/raw/` for traceability.
+Each page is validated and logged, then combined into a complete product dataset. The original API data is preserved as a timestamped JSON file in `data/raw/` for traceability.
 
 ### 2. Transform
+The raw JSON is validated before processing.
 
-The transformation stage loads the raw JSON and validates the expected
-structure before processing it.
-
-Nested product fields such as dimensions and metadata are flattened into
-tabular columns. Reviews, tags, and images are summarized into useful metrics,
-and pandas nullable data types are used to preserve missing values safely.
-
-Invalid required fields raise a custom `DataValidationError` instead of
-silently entering the database.
+Nested fields such as dimensions and metadata are flattened into tabular columns, while reviews, tags, and images are summarized into derived metrics. Data types are standardized with pandas nullable types, and invalid required values raise a custom `DataValidationError`.
 
 ### 3. Load
+The transformed DataFrame is loaded into PostgreSQL using Psycopg.
 
-The cleaned DataFrame is loaded into PostgreSQL using Psycopg.
-
-Products are identified by their source product ID. PostgreSQL
-`ON CONFLICT ... DO UPDATE` logic inserts new products and updates existing
-ones, making pipeline reruns idempotent.
+Products are keyed by their source product ID. PostgreSQL `ON CONFLICT ... DO UPDATE` logic inserts new records and updates existing ones, allowing the pipeline to be rerun without creating duplicate product IDs.
 
 ### 4. Orchestrate
-
-A single command runs the stages in order:
+The full ETL workflow runs with:
 
 ```bash
 python -m src.pipeline
 ```
-
-The orchestrator logs each stage, returns exit code `0` on success, and returns
-a non-zero exit code when the pipeline fails.
 
 ## Key Features
 
