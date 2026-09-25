@@ -100,6 +100,68 @@ The orchestrator runs Extract → Transform → Load in sequence, logs each stag
 - GitHub Actions CI for automated test execution
 
 ---
+## 🚀 Running the Pipeline
+
+### Recommended: Docker Compose
+
+Docker Compose runs both the Python ETL pipeline and PostgreSQL, so Python and PostgreSQL do not need to be installed separately.
+
+**Prerequisites**
+- Git
+- Docker Desktop with Docker Compose
+
+Clone the repository:
+
+```bash
+git clone https://github.com/AnnBMariyam/ecommerce-pipeline-foundations.git
+cd ecommerce-pipeline-foundations
+```
+
+Create the environment file:
+
+**Windows PowerShell**
+```powershell
+Copy-Item .env.example .env
+```
+
+**macOS/Linux**
+```bash
+cp .env.example .env
+```
+
+Update the database credentials in `.env`, then run:
+
+```bash
+docker compose up --build
+```
+
+Docker Compose starts PostgreSQL, waits for the database health check to pass, and then runs the complete Extract → Transform → Load workflow.
+
+To verify that product IDs were loaded without duplicates:
+
+```bash
+docker compose exec db psql -U pipeline_user -d ecommerce_analytics -c "SELECT COUNT(*) AS total_rows, COUNT(DISTINCT source_product_id) AS distinct_product_ids FROM api_products;"
+```
+
+Stop the services with:
+
+```bash
+docker compose down
+```
+
+### Optional: Run Locally
+
+The pipeline can also run directly with Python 3.12 and a local PostgreSQL instance.
+
+```bash
+python -m venv .venv
+python -m pip install -r requirements.txt
+python -m src.pipeline
+```
+
+Before running locally, create `.env` from `.env.example` and update `DATABASE_DSN` for your PostgreSQL environment.
+
+---
 
 ## 🧪 Testing & Continuous Integration
 
