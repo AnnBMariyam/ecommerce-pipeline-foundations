@@ -36,7 +36,6 @@ GitHub Actions CI.
 - Docker Compose
 - GitHub Actions
 
-## Pipeline Architecture
 
 ## 🏗️ Pipeline Architecture
 
