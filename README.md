@@ -82,7 +82,9 @@ The full ETL workflow runs with:
 ```bash
 python -m src.pipeline
 ```
+The orchestrator runs Extract → Transform → Load in sequence, logs each stage, returns exit code `0` on success, and returns a non-zero exit code if the pipeline fails.
 
+---
 ## Key Features
 
 - Paginated REST API extraction using `limit` and `skip`
