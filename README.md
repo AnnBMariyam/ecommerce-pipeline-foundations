@@ -85,23 +85,21 @@ python -m src.pipeline
 The orchestrator runs Extract → Transform → Load in sequence, logs each stage, returns exit code `0` on success, and returns a non-zero exit code if the pipeline fails.
 
 ---
-## Key Features
+## ✨ Key Features
 
 - Paginated REST API extraction using `limit` and `skip`
-- Timestamped raw JSON preservation
-- Structured logging to the terminal and `logs/pipeline.log`
-- Custom extraction, validation, configuration, and load errors
-- Nested JSON normalization with pandas
-- Nullable and validated data types
-- PostgreSQL upsert using `ON CONFLICT`
-- Idempotent pipeline reruns without duplicate product IDs
+- Timestamped raw JSON preservation for traceability
+- Nested JSON normalization and derived metrics with pandas
+- Data validation with custom extraction, configuration, transformation, and load errors
+- PostgreSQL `ON CONFLICT` upserts for idempotent reruns
+- Structured logging to both the terminal and `logs/pipeline.log`
 - Environment-based configuration with `python-dotenv`
-- Pytest coverage for transformation and configuration logic
-- Dockerized Python application
-- PostgreSQL and pipeline orchestration with Docker Compose
-- Database health checking before pipeline startup
-- Persistent PostgreSQL storage using a Docker volume
-- GitHub Actions CI
+- Automated pytest coverage for transformation and configuration logic
+- Dockerized Python application with PostgreSQL orchestration through Docker Compose
+- Database health checks and persistent PostgreSQL storage
+- GitHub Actions CI for automated test execution
+
+---
 
 ## Run with Docker
 
