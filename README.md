@@ -117,7 +117,11 @@ Run the test suite locally with:
 ```bash
 python -m pytest -v
 ```
+GitHub Actions runs the same test suite automatically on every push using Python 3.12, providing an independent check that the tested components work outside the local development environment.
 
+The workflow is defined in `.github/workflows/ci.yml`.
+
+---
 ## What I'd Improve Next
 
 With more time, I would extend the project in the following areas:
